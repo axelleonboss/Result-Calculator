@@ -1,0 +1,28 @@
+import sqlite3
+
+# Connect to SQLite database (creates file if not exists)
+conn = sqlite3.connect('database.db', check_same_thread=False)
+c = conn.cursor()
+
+# Users table
+c.execute('''
+CREATE TABLE IF NOT EXISTS users (
+    id INTEGER PRIMARY KEY,
+    full_name TEXT,
+    email TEXT UNIQUE,
+    password_hash TEXT,
+    is_verified BOOLEAN
+)
+''')
+
+# OTP table
+c.execute('''
+CREATE TABLE IF NOT EXISTS otps (
+    id INTEGER PRIMARY KEY,
+    user_id INTEGER,
+    code TEXT,
+    expires_at TEXT
+)
+''')
+
+conn.commit()
